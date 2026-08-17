@@ -1,0 +1,181 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package realsense2_description
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+4.58.3 (2026-07-20)
+-------------------
+* Push 4.58.3 release into ros2-master (`#3540 <https://github.com/IntelRealSense/realsense-ros/issues/3540>`_)
+* Update package.xml to version 4.58.3
+* Merge master into ros2-development (4.58.2 release sync) (`#3529 <https://github.com/IntelRealSense/realsense-ros/issues/3529>`_)
+* Keep development versions after master merge (ROS 4.58.0, rgbd_plugin 0.1.0)
+* Merge remote-tracking branch 'origin/ros2-master' into ros2-development
+* Merge remote-tracking branch 'origin/r/4.58.2' into ros2-master
+  # Conflicts:
+  #	realsense2_camera/CHANGELOG.rst
+  #	realsense2_camera/CMakeLists.txt
+  #	realsense2_camera_msgs/CHANGELOG.rst
+  #	realsense2_description/CHANGELOG.rst
+  #	realsense2_ros_mqtt_bridge/CHANGELOG.rst
+* PR `#3501 <https://github.com/IntelRealSense/realsense-ros/issues/3501>`_ from Nir-Az: Push release 4.57.7 to master
+* Merge remote-tracking branch 'origin/r/4.57.7' into ros2-master
+* PR `#3482 <https://github.com/IntelRealSense/realsense-ros/issues/3482>`_ from Nir-Az: Push Release 4.57.6 to master
+* Merge remote-tracking branch 'origin/r/4.57.6' into ros2-master
+  # Conflicts:
+  #	realsense2_camera/include/constants.h
+  #	realsense2_camera/package.xml
+  #	realsense2_camera_msgs/package.xml
+  #	realsense2_description/package.xml
+  #	realsense2_ros_mqtt_bridge/package.xml
+  #	realsense2_ros_mqtt_bridge/setup.py
+* Update package.xml version
+* PR `#3477 <https://github.com/IntelRealSense/realsense-ros/issues/3477>`_ from Nir-Az: Push 4.57.4 release to ros2-master
+* Merge remote-tracking branch 'origin/r/4.57.4' into ros2-master
+  # Conflicts:
+  #	README.md
+  #	realsense2_camera/CHANGELOG.rst
+  #	realsense2_camera/CMakeLists.txt
+  #	realsense2_camera/include/constants.h
+  #	realsense2_camera/package.xml
+  #	realsense2_camera_msgs/CHANGELOG.rst
+  #	realsense2_camera_msgs/package.xml
+  #	realsense2_description/CHANGELOG.rst
+  #	realsense2_description/package.xml
+* 4.57.4
+* changelogs updated
+* Update realsense2_camera_description package.xml to 4.57.4
+* PR `#3399 <https://github.com/IntelRealSense/realsense-ros/issues/3399>`_ from IntelRealSense: Push r/4.56.4 to master
+* PR `#3398 <https://github.com/IntelRealSense/realsense-ros/issues/3398>`_ from ashrafk93: R/4.56.4
+* 4.56.4
+* bump version to 4.56.4
+* Contributors: Ashraf Kattoura, Nir Azkiel, Remi Bettan, remibettan
+
+4.58.2 (2026-06-15)
+-------------------
+* Update package.xml to 4.58.2
+* PR `#3507 <https://github.com/IntelRealSense/realsense-ros/issues/3507>`_ from Nir-Az: align ros2-development to r/4.57.7
+* versions fix
+* Merge remote-tracking branch 'origin/r/4.57.7' into ros2-development
+  # Conflicts:
+  #	realsense2_camera/package.xml
+* 4.57.8
+* add release notes
+* 4.57.7
+* add change log
+* add release noted
+* Update package.xml
+* PR `#3485 <https://github.com/IntelRealSense/realsense-ros/issues/3485>`_ from Nir-Az: Fix GHA flow
+* install missing packages
+* PR `#3476 <https://github.com/IntelRealSense/realsense-ros/issues/3476>`_ from nivgo: Add support for Intel RealSense D436 Camera
+* typos fix
+* Add Intel realsense D436 URDF model
+* PR `#3462 <https://github.com/IntelRealSense/realsense-ros/issues/3462>`_ from remibettan: intel removed and github user changed
+* many intel removed and github user changed
+* PR `#3447 <https://github.com/IntelRealSense/realsense-ros/issues/3447>`_ from Nir-Az: Update maintainers before Realsense migration
+* update maintainers list
+* PR `#3442 <https://github.com/IntelRealSense/realsense-ros/issues/3442>`_ from remibettan/restore-minor-version-to-0: minor versions back to 0
+* minor back to 0
+* PR `#3441 <https://github.com/IntelRealSense/realsense-ros/issues/3441>`_ from remibettan/ros2-development: merging 4.57.3 to ros2-development
+* Merge tag '4.57.3' into ros2-development
+* Contributors: Nir Azkiel, Niv Goren, Remi Bettan, remibettan
+
+4.57.8 (2026-03-27)
+-------------------
+
+4.57.7 (2026-03-24)
+-------------------
+* add release noted
+* Update package.xml
+* PR `#3485 <https://github.com/IntelRealSense/realsense-ros/issues/3485>`_ from Nir-Az: Fix GHA flow
+* install missing packages
+* PR `#3476 <https://github.com/IntelRealSense/realsense-ros/issues/3476>`_ from nivgo: Add support for Intel RealSense D436 Camera
+* typos fix
+* Add Intel realsense D436 URDF model
+* PR `#3462 <https://github.com/IntelRealSense/realsense-ros/issues/3462>`_ from remibettan: intel removed and github user changed
+* many intel removed and github user changed
+* PR `#3447 <https://github.com/IntelRealSense/realsense-ros/issues/3447>`_ from Nir-Az: Update maintainers before Realsense migration
+* update maintainers list
+* PR `#3442 <https://github.com/IntelRealSense/realsense-ros/issues/3442>`_ from remibettan/restore-minor-version-to-0: minor versions back to 0
+* minor back to 0
+* PR `#3441 <https://github.com/IntelRealSense/realsense-ros/issues/3441>`_ from remibettan/ros2-development: merging 4.57.3 to ros2-development
+* Merge tag '4.57.3' into ros2-development
+* Contributors: Nir Azkiel, Niv Goren, Remi Bettan, remibettan
+
+4.57.3 (2025-09-15)
+-------------------
+* PR `#3429 <https://github.com/realsenseai/realsense-ros/issues/3429>`_ from remibettan: intel removed, realsense added
+* PR `#3417 <https://github.com/realsenseai/realsense-ros/issues/3417>`_ from remibettan: Merging ros2 hkr to ros2 dev final
+* PR `#45 <https://github.com/realsenseai/realsense-ros/issues/45>`_ from remibettan: Merge ros2 dev to ros2 hkr
+* PR `#3404 <https://github.com/realsenseai/realsense-ros/issues/3404>`_ from adamwhats: Use package:// to discover meshes
+* PR `#3410 <https://github.com/realsenseai/realsense-ros/issues/3410>`_ from Nir-Az: Update copyrights
+* PR `#3401 <https://github.com/realsenseai/realsense-ros/issues/3401>`_ from ashrafk93: remove test dependencies
+* PR `#2813 <https://github.com/realsenseai/realsense-ros/issues/2813>`_ from SamerKhshiboun: Fix URDF and LPCL for SC
+* PR `#2807 <https://github.com/realsenseai/realsense-ros/issues/2807>`_ from SamerKhshiboun: Update _d585.urdf.xacro
+* PR `#2771 <https://github.com/realsenseai/realsense-ros/issues/2771>`_ from SamerKhshiboun: SC urdf
+* Contributors: Arun-Prasad-V, Ashraf Kattoura, Nir Azkiel, Remi Bettan, Samer Khshiboun, adamwhats
+
+4.55.1 (2024-05-28)
+-------------------
+* PR `#2957 <https://github.com/realsenseai/realsense-ros/issues/2957>`_ from hellototoro: to_urdf fun retrun a str, not a BufferedRandom
+* PR `#2953 <https://github.com/realsenseai/realsense-ros/issues/2953>`_ from Arun-Prasad-V: Added urdf & mesh files for D405 model
+* PR `#2841 <https://github.com/realsenseai/realsense-ros/issues/2841>`_ from SamerKhshiboun: Remove Dashing, Eloquent, Foxy, L500 and SR300 support
+* PR `#2817 <https://github.com/realsenseai/realsense-ros/issues/2817>`_ from karina-ranadive: Replaced Deprecated function mktemp to TemporaryFile
+* Contributors: Arun-Prasad-V, karina-ranadive, SamerKhshiboun, hellototoro
+
+4.54.1 (2023-06-27)
+-------------------
+* Update mesh path
+* clone PR1637 to ros2-development
+* Fix Apache License Header and Intel Copyrights
+* apply copyrights and license on project
+* Replace deprecated parameter node_name with name
+* Contributors: Arun Prasad, Nir Azkiel, SamerKhshiboun, augustelalande, marqrazz
+
+4.51.1 (2022-09-13)
+-------------------
+* Add copyright and license to all ROS2-beta source files
+
+* Contributors: SamerKhshiboun
+
+4.0.4 (2022-03-20)
+------------------
+
+4.0.3 (2022-03-16)
+------------------
+
+4.0.2 (2022-02-24)
+------------------
+
+4.0.1 (2022-02-01)
+------------------
+* Add D455 urdf files
+
+* Contributors: nomumu, JamesChooWK, doronhi
+
+3.1.3 (2020-12-28)
+------------------
+* fix realsense2_description's dependency to realsense2_camera_msgs
+  remove boost dependency.
+  rename node_namespace to namespace
+  rename node_executable to executable
+* Contributors: benlev, Gilaadb, doronhi
+
+3.1.2 (2020-12-10)
+------------------
+* Add urdf for L515.
+* remove librealsense2 and realsense2_camera dependencies
+* Add models for D415, D435, D435i.
+  For visualization, can be presented using view_model.launch.py
+* fix view_d435_model.launch.py and view_d435i_model.launch.py
+  run: ros2 launch realsense2_description view_d435i_model.launch.py
+* Contributors: Ryan Shim, doronhi
+
+2.2.14 (2020-06-18)
+-------------------
+* fix urdf issues (arg use_nominal_extrinsics).
+* Add noetic support: 
+  - urdf files.
+  - change state_publisher into robot_state_publisher
+* correct offset between camera_link and base_link
+* Contributors: Brice, Marco Camurri, doronhi
+
+* upgrade version to 2.2.13

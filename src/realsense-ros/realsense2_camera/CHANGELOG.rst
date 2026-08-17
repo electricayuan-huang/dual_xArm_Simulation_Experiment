@@ -1,0 +1,495 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package realsense2_camera
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+4.58.3 (2026-07-20)
+-------------------
+* Push 4.58.3 release into ros2-master (`#3540 <https://github.com/IntelRealSense/realsense-ros/issues/3540>`_)
+* Fix image_transport::create_publisher for ROS2 Rolling (`#3541 <https://github.com/IntelRealSense/realsense-ros/issues/3541>`_)
+* Update package.xml  to version 4.58.3
+* Update constants.h to version 4.58.3
+* Merge master into ros2-development (4.58.2 release sync) (`#3529 <https://github.com/IntelRealSense/realsense-ros/issues/3529>`_)
+* Keep development versions after master merge (ROS 4.58.0, rgbd_plugin 0.1.0)
+* Merge remote-tracking branch 'origin/ros2-master' into ros2-development
+* Merge pull request `#3527 <https://github.com/IntelRealSense/realsense-ros/issues/3527>`_ from Nir-Az/fix-rosci-port-detection
+  rosci: route YKUSH control through rspy hub (drop direct ykushcmd)
+* rosci: skip YKUSH hub reset on first attempt to avoid ykushcmd USB-error spam
+* rosci: route YKUSH control through rspy hub, drop all ykushcmd calls
+* rosci: derive YKUSH port map from a single rspy query (no per-port toggling)
+* Merge pull request `#3526 <https://github.com/IntelRealSense/realsense-ros/issues/3526>`_ from Nir-Az/fix-device-name-prefix-parse
+  Make live-camera device-name parsing vendor-prefix-agnostic
+* Address review: use NAME_LINE_VALUE_OFFSET constant instead of literal 2
+* Remove Intel references from live-camera and mqtt-bridge test files
+* Make live-camera device-name parsing vendor-prefix-agnostic
+* Merge pull request `#3524 <https://github.com/IntelRealSense/realsense-ros/issues/3524>`_ from Nir-Az/fix-d555-name-match
+  Fix D555 DDS device detection to not depend on Intel name prefix
+* Merge remote-tracking branch 'origin/r/4.58.2' into ros2-master
+  # Conflicts:
+  #	realsense2_camera/CHANGELOG.rst
+  #	realsense2_camera/CMakeLists.txt
+  #	realsense2_camera_msgs/CHANGELOG.rst
+  #	realsense2_description/CHANGELOG.rst
+  #	realsense2_ros_mqtt_bridge/CHANGELOG.rst
+* Fix D555 DDS device detection to not depend on Intel name prefix
+* PR `#3501 <https://github.com/IntelRealSense/realsense-ros/issues/3501>`_ from Nir-Az: Push release 4.57.7 to master
+* Merge remote-tracking branch 'origin/r/4.57.7' into ros2-master
+* PR `#3482 <https://github.com/IntelRealSense/realsense-ros/issues/3482>`_ from Nir-Az: Push Release 4.57.6 to master
+* Merge remote-tracking branch 'origin/r/4.57.6' into ros2-master
+  # Conflicts:
+  #	realsense2_camera/include/constants.h
+  #	realsense2_camera/package.xml
+  #	realsense2_camera_msgs/package.xml
+  #	realsense2_description/package.xml
+  #	realsense2_ros_mqtt_bridge/package.xml
+  #	realsense2_ros_mqtt_bridge/setup.py
+* Update version in constants.h
+* Update CMakeLists.txt version
+* Update package.xml version
+* PR `#3477 <https://github.com/IntelRealSense/realsense-ros/issues/3477>`_ from Nir-Az: Push 4.57.4 release to ros2-master
+* Update constants.h
+* Merge remote-tracking branch 'origin/r/4.57.4' into ros2-master
+  # Conflicts:
+  #	README.md
+  #	realsense2_camera/CHANGELOG.rst
+  #	realsense2_camera/CMakeLists.txt
+  #	realsense2_camera/include/constants.h
+  #	realsense2_camera/package.xml
+  #	realsense2_camera_msgs/CHANGELOG.rst
+  #	realsense2_camera_msgs/package.xml
+  #	realsense2_description/CHANGELOG.rst
+  #	realsense2_description/package.xml
+* 4.57.4
+* changelogs updated
+* Update realsense2_camera package.xml to 4.57.4
+* PR `#3400 <https://github.com/IntelRealSense/realsense-ros/issues/3400>`_ from Nir-Az: Fix releases dependencies
+* remove strict requirement
+* PR `#3374 <https://github.com/IntelRealSense/realsense-ros/issues/3374>`_ from remibettan: kilted added to wrapper
+  (cherry picked from commit 01c054b352e3b0019460347b73579726114b0404)
+  # Conflicts:
+  #	.github/workflows/main.yml
+* PR `#3399 <https://github.com/IntelRealSense/realsense-ros/issues/3399>`_ from IntelRealSense: Push r/4.56.4 to master
+* PR `#3398 <https://github.com/IntelRealSense/realsense-ros/issues/3398>`_ from ashrafk93: R/4.56.4
+* 4.56.4
+* bump version to 4.56.4
+* PR `#3329 <https://github.com/IntelRealSense/realsense-ros/issues/3329>`_ from Nir-Az: Update version to 4.56.4
+* update version to 4.56.4
+* PR `#3148 <https://github.com/IntelRealSense/realsense-ros/issues/3148>`_ from SamerKhshiboun: update READMEs and CONTRIBUTING files regarding ros2-master
+* update READMEs and CONTRIBUTING files regarding ros2-master
+* Update CMakeLists.txt
+* Contributors: Ashraf Kattoura, Nir Azkiel, Remi Bettan, Samer Khshiboun, SamerKhshiboun, remibettan
+
+4.58.2 (2026-06-15)
+-------------------
+* Update CMakeLists.txt to 4.58.2
+* Update package.xml to 4.58.2
+* Update constants.h to 4.58.2
+* PR `#3517 <https://github.com/IntelRealSense/realsense-ros/issues/3517>`_ from Gilaadb: Imu handling in component
+* Fix _imu_history state corruption on unite_imu_method change
+  When switching between COPY and LINEAR_INTERPOLATION at runtime via the
+  'unite_imu_method' parameter, _imu_history may contain stale entries from
+  the previous mode. Clear it under _imu_callback_mutex to prevent corrupt
+  IMU messages (e.g. a GYRO sample being used as accel data in COPY mode).
+* PR `#3516 <https://github.com/IntelRealSense/realsense-ros/issues/3516>`_ from AviaAv: Reset device at start of test_live_record_db3_play
+* Shorten post-reset wait from 10s to 5s
+* Fix race on time base variables in components (composable nodes)
+  When using components, different sensor threads (video, IMU) can call
+  frameSystemTimeSec concurrently on the same instance. The time base
+  fields (_ros_time_base, _camera_time_base, _previous_frame_time) had
+  no protection, so concurrent init or hardware clock reset could produce
+  torn reads and inconsistent timestamp pairs.
+  Folded the time base init and reset logic into frameSystemTimeSec
+  behind a per-instance mutex, making it the single place that reads and
+  writes the time base fields. Removed setBaseTime and the CAS-based
+  init blocks in the callbacks, which had a publication window where one
+  thread could read uninitialized values after another won the CAS but
+  before it had finished writing. Converted _is_initialized_time_base
+  from std::atomic_bool to bool since all accesses are now under the
+  mutex and the atomic is no longer needed.
+* Fix shared IMU callback mutex in components (composable nodes)
+  When using components, different realsense cameras are part of the same
+  process. The mutex guarding imu_callback_sync was a function-local
+  static, so it was shared between all camera components and serialized
+  unrelated callbacks across cameras.
+  Moved the mutex to an instance member so each component has its own,
+  and switched to std::lock_guard which is cleaner and better if an
+  exception is ever thrown while the lock is held.
+* Fix IMU message pollution in components (composable nodes)
+  When using components, different realsense cameras are part of the same
+  process. When using a static variable like was done in both unite
+  methods, these variables are shared between the different camera
+  components and all of them write to the same structure. It caused the
+  published IMU messages to have the wrong data because it came from
+  different camera sources.
+  Moved the buffer to an instance member so each component has its own.
+* Fail test_live_record_db3_play if no device, don't skip
+* Reset device at start of test_live_record_db3_play
+* PR `#3513 <https://github.com/IntelRealSense/realsense-ros/issues/3513>`_ from AviaAv: Bump wait_for_frames timeout in live db3 test
+* Bump wait_for_frames timeout
+* PR `#3511 <https://github.com/IntelRealSense/realsense-ros/issues/3511>`_ from AviaAv: Add rosbag2 ROS2 playback test
+* Drain live-replay frame queue with keep_frames=True
+* Add live db3 record/play test and tweak play check
+* Add rosbag2 (.db3) ROS2 playback test
+* PR `#3505 <https://github.com/IntelRealSense/realsense-ros/issues/3505>`_ from remibettan: Skip RS2_OPTION_REGION_OF_INTEREST in registerDynamicOptions
+* PR `#3504 <https://github.com/IntelRealSense/realsense-ros/issues/3504>`_ from Nir-Az: Switch CI to ros-core containers for strict dep checking
+* needs a development version to be able to work with development branch
+* PR `#3507 <https://github.com/IntelRealSense/realsense-ros/issues/3507>`_ from Nir-Az: align ros2-development to r/4.57.7
+* versions fix
+* Merge remote-tracking branch 'origin/r/4.57.7' into ros2-development
+  # Conflicts:
+  #	realsense2_camera/package.xml
+* Add dependency completeness check and fix missing deps
+  Add scripts/check_package_deps.sh that validates package.xml declares
+  all required dependencies. This catches issues the build farm catches
+  but rosdep+apt misses (transitive deps mask missing declarations):
+  - .action files require action_msgs in build_depend
+  - find_package() calls need matching package.xml entries
+  - rosidl_generate_interfaces DEPENDENCIES need matching entries
+  The script immediately found two real missing dependencies:
+  - realsense2_camera: missing rclcpp_action
+  - realsense2_rviz_plugin: missing cv_bridge
+  Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+* Skip RS2_OPTION_REGION_OF_INTEREST in registerDynamicOptions
+* 4.57.8
+* add release notes
+* PR `#3498 <https://github.com/IntelRealSense/realsense-ros/issues/3498>`_ from SimbeRobotics: Detect and handle hardware timestamp reset
+* 4.57.7
+* add change log
+* add release noted
+* changes
+* Update package.xml
+* Update package.xml
+* Update package.xml mail
+* log
+* bring back comment
+* Detect and handle hardware timestamp reset
+* Update package.xml
+* Update constants.h
+* PR `#3485 <https://github.com/IntelRealSense/realsense-ros/issues/3485>`_ from Nir-Az: Fix GHA flow
+* install missing packages
+* PR `#3475 <https://github.com/IntelRealSense/realsense-ros/issues/3475>`_ from remibettan: find package set to last major release version
+* find package set to lrs prev major version 2
+* PR `#3474 <https://github.com/IntelRealSense/realsense-ros/issues/3474>`_ from remibettan: find package set to lrs prev major version
+* find package set to lrs prev major version
+* PR `#3462 <https://github.com/IntelRealSense/realsense-ros/issues/3462>`_ from remibettan: intel removed and github user changed
+* undoing the change in copyright, fixing bagfiles links
+* PR `#3468 <https://github.com/IntelRealSense/realsense-ros/issues/3468>`_ from remibettan: using legacy libraries for foxy
+* using legacy libraries for foxy
+* code review corrections
+* many intel removed and github user changed
+* PR `#3450 <https://github.com/IntelRealSense/realsense-ros/issues/3450>`_ from Nir-Az: update to realsenseai
+* update to realsenseai
+* PR `#3448 <https://github.com/IntelRealSense/realsense-ros/issues/3448>`_ from OhadMeir: Add motion_fps to launch file
+* Add motion_fps to launch file
+* PR `#3442 <https://github.com/IntelRealSense/realsense-ros/issues/3442>`_ from remibettan/restore-minor-version-to-0: minor versions back to 0
+* minor back to 0 - leftovers
+* minor back to 0
+* PR `#3441 <https://github.com/IntelRealSense/realsense-ros/issues/3441>`_ from remibettan/ros2-development: merging 4.57.3 to ros2-development
+* Merge tag '4.57.3' into ros2-development
+* PR `#3437 <https://github.com/IntelRealSense/realsense-ros/issues/3437>`_ from Gilaadb: bug fix(rs_node_setup): Fix topic names that were improperly marked as rect (rectified)
+* bug fix(rs_node_setup): Fix topic names that were improperly marked as rect (rectified)
+* Contributors: Avia Avraham, Gilad Bretter, Nandini, Nandini Thakur, Nir Azkiel, OhadMeir, Remi Bettan, remibettan
+
+4.57.8 (2026-03-27)
+-------------------
+
+4.57.7 (2026-03-24)
+-------------------
+* add release noted
+* Update package.xml
+* Update package.xml
+* Update constants.h
+* PR `#3485 <https://github.com/IntelRealSense/realsense-ros/issues/3485>`_ from Nir-Az: Fix GHA flow
+* install missing packages
+* PR `#3475 <https://github.com/IntelRealSense/realsense-ros/issues/3475>`_ from remibettan: find package set to last major release version
+* find package set to lrs prev major version 2
+* PR `#3474 <https://github.com/IntelRealSense/realsense-ros/issues/3474>`_ from remibettan: find package set to lrs prev major version
+* find package set to lrs prev major version
+* PR `#3462 <https://github.com/IntelRealSense/realsense-ros/issues/3462>`_ from remibettan: intel removed and github user changed
+* undoing the change in copyright, fixing bagfiles links
+* PR `#3468 <https://github.com/IntelRealSense/realsense-ros/issues/3468>`_ from remibettan: using legacy libraries for foxy
+* using legacy libraries for foxy
+* code review corrections
+* many intel removed and github user changed
+* PR `#3450 <https://github.com/IntelRealSense/realsense-ros/issues/3450>`_ from Nir-Az: update to realsenseai
+* update to realsenseai
+* PR `#3448 <https://github.com/IntelRealSense/realsense-ros/issues/3448>`_ from OhadMeir: Add motion_fps to launch file
+* Add motion_fps to launch file
+* PR `#3442 <https://github.com/IntelRealSense/realsense-ros/issues/3442>`_ from remibettan/restore-minor-version-to-0: minor versions back to 0
+* minor back to 0 - leftovers
+* minor back to 0
+* PR `#3441 <https://github.com/IntelRealSense/realsense-ros/issues/3441>`_ from remibettan/ros2-development: merging 4.57.3 to ros2-development
+* Merge tag '4.57.3' into ros2-development
+* PR `#3437 <https://github.com/IntelRealSense/realsense-ros/issues/3437>`_ from Gilaadb: bug fix(rs_node_setup): Fix topic names that were improperly marked as rect (rectified)
+* bug fix(rs_node_setup): Fix topic names that were improperly marked as rect (rectified)
+* Contributors: Gilad Bretter, Nir Azkiel, OhadMeir, Remi Bettan, remibettan
+
+4.57.3 (2025-09-15)
+-------------------
+* PR `#3430 <https://github.com/realsenseai/realsense-ros/issues/3430>`_ from Gilaadb: Create a singleton wrapper to rs2::context
+* PR `#3429 <https://github.com/realsenseai/realsense-ros/issues/3429>`_ from remibettan: intel removed, realsense added
+* PR `#3421 <https://github.com/realsenseai/realsense-ros/issues/3421>`_ from ynyBonfennil: Fix argument names (`_usb_port_id` and `_device_type`)
+* PR `#3417 <https://github.com/realsenseai/realsense-ros/issues/3417>`_ from remibettan: Merging ros2 hkr to ros2 dev final
+* PR `#3410 <https://github.com/realsenseai/realsense-ros/issues/3410>`_ from Nir-Az: Update copyrights
+* PR `#3356 <https://github.com/realsenseai/realsense-ros/issues/3356>`_ from ashrafk93: Ashraf/glsl pointcloud
+* PR `#3374 <https://github.com/realsenseai/realsense-ros/issues/3374>`_ from remibettan: kilted added to wrapper
+* PR `#3392 <https://github.com/realsenseai/realsense-ros/issues/3392>`_ from remibettan: adding D436
+* PR `#3385 <https://github.com/realsenseai/realsense-ros/issues/3385>`_ from Gilaadb: Fix RGBD camera_info and frame_id
+* PR `#3371 <https://github.com/realsenseai/realsense-ros/issues/3371>`_ from Gilaadb: replace posix argument with suffix which is what it was meant to be
+* PR `#3347 <https://github.com/realsenseai/realsense-ros/issues/3347>`_ from remibettan: few logs and exceptions catches added
+* PR `#41 <https://github.com/realsenseai/realsense-ros/issues/41>`_ from remibettan: Merge dev to hkr 2025 05 04
+* PR `#3352 <https://github.com/realsenseai/realsense-ros/issues/3352>`_ from ashrafk93: Fix unit test of Support TF Prefixing
+* PR `#3332 <https://github.com/realsenseai/realsense-ros/issues/3332>`_ from pondersome: Support TF Prefixing
+* PR `#3340 <https://github.com/realsenseai/realsense-ros/issues/3340>`_ from Gilaadb: Support rgbd type and fix bug for FPS lower than 1
+* PR `#3325 <https://github.com/realsenseai/realsense-ros/issues/3325>`_ from ashrafk93: use ykush to switch ports
+* PR `#3319 <https://github.com/realsenseai/realsense-ros/issues/3319>`_ from ashrafk93: Add LifeCycle Node support at compile time
+* PR `#3303 <https://github.com/realsenseai/realsense-ros/issues/3303>`_ from noacoohen: Enable rotation filter for color and depth sensors
+* PR `#3293 <https://github.com/realsenseai/realsense-ros/issues/3293>`_ from remibettan: align_depth_to_infra2 enabled, pointcloud and align_depth filters to own files
+* PR `#3284 <https://github.com/realsenseai/realsense-ros/issues/3284>`_ from noacoohen: Add color format to depth module in the launch file
+* PR  `#3274 <https://github.com/realsenseai/realsense-ros/issues/3274>`_ from noacoohen: Enable rotation filter ROS2
+* PR `#3276 <https://github.com/realsenseai/realsense-ros/issues/3276>`_ from remibettan: removing dead code in RosSensor class
+* PR `#3214 <https://github.com/realsenseai/realsense-ros/issues/3214>`_ from acornaglia: Add ROS bag loop option
+* PR `#3239 <https://github.com/realsenseai/realsense-ros/issues/3239>`_ from SamerKhshiboun: Update CMakeLists.txt - remove find_package(fastrtps REQUIRED)
+* PR `#3225 <https://github.com/realsenseai/realsense-ros/issues/3225>`_ from SamerKhshiboun: Use new APIs for motion, accel and gryo streams
+* PR `#3222 <https://github.com/realsenseai/realsense-ros/issues/3222>`_ from SamerKhshiboun: Support D555 and its motion profiles
+* PR `#3221 <https://github.com/realsenseai/realsense-ros/issues/3221>`_ from patrickwasp: fix config typo
+* PR `#33 <https://github.com/realsenseai/realsense-ros/issues/33>`_ from PrasRsRos: add reset service tests
+* PR `#35 <https://github.com/realsenseai/realsense-ros/issues/35>`_ from PrasRsRos: align private to public 30.9.2024
+* PR `#32 <https://github.com/realsenseai/realsense-ros/issues/32>`_ from SamerKhshiboun: Support HWM command as ROS2 service and in the ROS-MQTT bridge node
+* PR `#3216 <https://github.com/realsenseai/realsense-ros/issues/3216>`_ from PrasRsRos: hw_reset implementation
+* PR `#30 <https://github.com/realsenseai/realsense-ros/issues/30>`_ from SamerKhshiboun: Use new apis of SIC and SP that works directly with JSON inputs/outputs
+* PR `#28 <https://github.com/realsenseai/realsense-ros/issues/28>`_ from SamerKhshiboun: Fix MQTT Demo and update values for and update TC consecutives failures threshold
+* PR `#27 <https://github.com/realsenseai/realsense-ros/issues/27>`_ from SamerKhshiboun: Add new flash 0.93 fields to app config
+* PR `#3200 <https://github.com/realsenseai/realsense-ros/issues/3200>`_ from kadiredd: retry thrice finding devices with Ykush reset
+* PR `#23 <https://github.com/realsenseai/realsense-ros/issues/23>`_ from PrasRsRos: Ros tc implementation
+* PR `#20 <https://github.com/realsenseai/realsense-ros/issues/20>`_ from SamerKhshiboun: Revert switching to service mode in order to set depth params
+* PR `#21 <https://github.com/realsenseai/realsense-ros/issues/21>`_ from SamerKhshiboun: Fix l4 threshold to l2 threshold
+* PR `#19 <https://github.com/realsenseai/realsense-ros/issues/19>`_ from PrasRsRos: DeviceInfo and TC Mqtt tests
+* PR `#3178 <https://github.com/realsenseai/realsense-ros/issues/3178>`_ from kadiredd: disabling FPS & TF tests for ROS-CI
+* PR `#16 <https://github.com/realsenseai/realsense-ros/issues/16>`_ from PrasRsRos: RS ROS Mqtt bridge unit tests
+* PR `#3166 <https://github.com/realsenseai/realsense-ros/issues/3166>`_ from SamerKhshiboun: Update Calibration Config API
+* PR `#13 <https://github.com/realsenseai/realsense-ros/issues/13>`_ from SamerKhshiboun: Sٍupport set/get application config as ROS service and in ROS-MQTT bridge
+* PR `#3159 <https://github.com/realsenseai/realsense-ros/issues/3159>`_ from noacoohen: Add D421 PID
+* PR `#10 <https://github.com/realsenseai/realsense-ros/issues/10>`_ from SamerKhshiboun: Add ROS MQTT Bridge (Python) Node Into realsense-ros-private
+* PR `#3153 <https://github.com/realsenseai/realsense-ros/issues/3153>`_ from SamerKhshiboun: TC | Fix feedback and update readme
+* fix feedback and update readme for TC
+* PR `#3138 <https://github.com/realsenseai/realsense-ros/issues/3138>`_ from SamerKhshiboun: Support Triggered Calibration as ROS2 Action
+* implement Triggered Calibration action
+* PR `#3135 <https://github.com/realsenseai/realsense-ros/issues/3135>`_ from kadiredd: Casefolding device name instead of strict case sensitive comparison
+* Casefolding device name instead os strict case sensitive comparison
+* PR `#3133 <https://github.com/realsenseai/realsense-ros/issues/3133>`_ from SamerKhshiboun: update librealsense2 version to 2.56.0
+* update librealsense2 version to 2.56.0
+  since it includes new API that need for ros2-development
+* PR `#3124 <https://github.com/realsenseai/realsense-ros/issues/3124>`_ from kadiredd: Support testing ROS2 service call device_info
+* PR `#3125 <https://github.com/realsenseai/realsense-ros/issues/3125>`_ from SamerKhshiboun: Support calibration config read/write services
+* PR `#5 <https://github.com/realsenseai/realsense-ros/issues/5>`_ from SamerKhshiboun: Update README and fix SIC fields in the examples
+* PR `#3114 <https://github.com/realsenseai/realsense-ros/issues/3114>`_ from Arun-Prasad-V: Ubuntu 24.04 support for Rolling and Jazzy distros
+* PR `#3 <https://github.com/realsenseai/realsense-ros/issues/3>`_ from SamerKhshiboun: Support sic read write services
+* PR `#2 <https://github.com/realsenseai/realsense-ros/issues/2>`_ from SamerKhshiboun: Support Safety Preset Read/Write Services
+* PR `#3102 <https://github.com/realsenseai/realsense-ros/issues/3102>`_ from fortizcuesta: Allow hw synchronization of several realsense using a synchonization cable
+* PR `#3096 <https://github.com/realsenseai/realsense-ros/issues/3096>`_ from anisotropicity: Update rs_launch.py to add depth_module.color_profile
+* PR `#1 <https://github.com/realsenseai/realsense-ros/issues/1>`_ from Arun-Prasad-V: Set Safety mode to SERVICE when loading preset
+* PR `#3061 <https://github.com/realsenseai/realsense-ros/issues/3061>`_ from Arun-Prasad-V: Updated rs_launch.py for LPC and Occupancy stream profile names
+* rs-launch.py update
+* PR `#3038 <https://github.com/realsenseai/realsense-ros/issues/3038>`_ from Arun-Prasad-V: Set Safety mode to service before updating Depth controls during launch
+* PR `#3032 <https://github.com/realsenseai/realsense-ros/issues/3032>`_ from SamerKhshiboun: Support occupancy grid cells
+* PR `#2971 <https://github.com/realsenseai/realsense-ros/issues/2971>`_ from SamerKhshiboun: Occupancy Height Fix
+* PR `#2952 <https://github.com/realsenseai/realsense-ros/issues/2952>`_ from Nir-Az: Support 2 res for LPC
+* PR `#2827 <https://github.com/realsenseai/realsense-ros/issues/2827>`_ from SamerKhshiboun: Fix empty frames of rgbd
+* PR `#2821 <https://github.com/realsenseai/realsense-ros/issues/2821>`_ from SamerKhshiboun: fix missing else due to merge from ros2-development
+* PR `#2813 <https://github.com/realsenseai/realsense-ros/issues/2813>`_ from SamerKhshiboun: Fix URDF and LPCL for SC
+* PR `#2815 <https://github.com/realsenseai/realsense-ros/issues/2815>`_ from SamerKhshiboun: fix labeled point cloud publisher reset condition
+* PR `#2802 <https://github.com/realsenseai/realsense-ros/issues/2802>`_ from SamerKhshiboun: add new RGBD topic
+* PR `#2800 <https://github.com/realsenseai/realsense-ros/issues/2800>`_ from SamerKhshiboun: Fix overriding frames on same topics/CV-images due to a bug in PR2759
+* PR `#2776 <https://github.com/realsenseai/realsense-ros/issues/2776>`_ from SamerKhshiboun: Fix LPCL in SC
+* PR `#2757 <https://github.com/realsenseai/realsense-ros/issues/2757>`_ from SamerKhshiboun: Support Depth Mapping Streams
+* PR `#2659 <https://github.com/realsenseai/realsense-ros/issues/2659>`_ from SamerKhshiboun: Warn instead of error for undefined sensor callbacks
+* PR `#2590 <https://github.com/realsenseai/realsense-ros/issues/2590>`_ from SamerKhshiboun: Add SC to ROS
+* Contributors: Aman Chulawala, Arun-Prasad-V, Ashraf Kattoura, AviaAv, Cornaglia, Alessandro, Gilad Bretter, Madhukar Reddy Kadireddy, Nir Azkiel, Ortiz Cuesta, Fernando, Patrick Wspanialy, PrasRsRos, Remi Bettan, Samer Khshiboun, acornaglia, administrator, anisotropicity, louislelay, noacoohen, pondersome, ynyBonfennil
+
+4.55.1 (2024-05-28)
+-------------------
+* PR `#3106 <https://github.com/realsenseai/realsense-ros/issues/3106>`_ from SamerKhshiboun: Remove unused parameter _is_profile_exist
+* PR `#3098 <https://github.com/realsenseai/realsense-ros/issues/3098>`_ from kadiredd: ROS live cam test fixes
+* PR `#3094 <https://github.com/realsenseai/realsense-ros/issues/3094>`_ from kadiredd: ROSCI infra for live camera testing
+* PR `#3066 <https://github.com/realsenseai/realsense-ros/issues/3066>`_ from SamerKhshiboun: Revert Foxy Build Support (From Source)
+* PR `#3052 <https://github.com/realsenseai/realsense-ros/issues/3052>`_ from Arun-Prasad-V: Support for selecting profile for each stream_type
+* PR `#3056 <https://github.com/realsenseai/realsense-ros/issues/3056>`_ from SamerKhshiboun: Add documentation for RealSense ROS2 Wrapper Windows installation
+* PR `#3049 <https://github.com/realsenseai/realsense-ros/issues/3049>`_ from Arun-Prasad-V: Applying Colorizer filter to Aligned-Depth image
+* PR `#3053 <https://github.com/realsenseai/realsense-ros/issues/3053>`_ from Nir-Az: Fix Coverity issues + remove empty warning log
+* PR `#3007 <https://github.com/realsenseai/realsense-ros/issues/3007>`_ from Arun-Prasad-V: Skip updating Exp 1,2 & Gain 1,2 when HDR is disabled
+* PR `#3042 <https://github.com/realsenseai/realsense-ros/issues/3042>`_ from kadiredd: Assert Fail if camera not found
+* PR `#3008 <https://github.com/realsenseai/realsense-ros/issues/3008>`_ from Arun-Prasad-V: Renamed GL GPU enable param
+* PR `#2989 <https://github.com/realsenseai/realsense-ros/issues/2989>`_ from Arun-Prasad-V: Dynamically switching b/w CPU & GPU processing
+* PR `#3001 <https://github.com/realsenseai/realsense-ros/issues/3001>`_ from deep0294: Update ReadMe to run ROS2 Unit Test
+* PR `#2998 <https://github.com/realsenseai/realsense-ros/issues/2998>`_ from SamerKhshiboun: fix calibration intrinsic fail
+* PR `#2987 <https://github.com/realsenseai/realsense-ros/issues/2987>`_ from SamerKhshiboun: Remove D465 SKU
+* PR `#2984 <https://github.com/realsenseai/realsense-ros/issues/2984>`_ from deep0294: Fix All Profiles Test
+* PR `#2956 <https://github.com/realsenseai/realsense-ros/issues/2956>`_ from Arun-Prasad-V: Extending LibRS's GL support to RS ROS2
+* PR `#2953 <https://github.com/realsenseai/realsense-ros/issues/2953>`_ from Arun-Prasad-V: Added urdf & mesh files for D405 model
+* PR `#2940 <https://github.com/realsenseai/realsense-ros/issues/2940>`_ from Arun-Prasad-V: Fixing the data_type of ROS Params exposure & gain
+* PR `#2948 <https://github.com/realsenseai/realsense-ros/issues/2948>`_ from Arun-Prasad-V: Disabling HDR during INIT
+* PR `#2934 <https://github.com/realsenseai/realsense-ros/issues/2934>`_ from Arun-Prasad-V: Disabling hdr while updating exposure & gain values
+* PR `#2946 <https://github.com/realsenseai/realsense-ros/issues/2946>`_ from gwen2018: fix ros random crash with error hw monitor command for asic temperature failed
+* PR `#2865 <https://github.com/realsenseai/realsense-ros/issues/2865>`_ from PrasRsRos: add live camera tests
+* PR `#2891 <https://github.com/realsenseai/realsense-ros/issues/2891>`_ from Arun-Prasad-V: revert PR2872
+* PR `#2853 <https://github.com/realsenseai/realsense-ros/issues/2853>`_ from Arun-Prasad-V: Frame latency for the '/topic' provided by user
+* PR `#2872 <https://github.com/realsenseai/realsense-ros/issues/2872>`_ from Arun-Prasad-V: Updating _camera_name with RS node's name
+* PR `#2878 <https://github.com/realsenseai/realsense-ros/issues/2878>`_ from Arun-Prasad-V: Updated ros2 examples and readme
+* PR `#2841 <https://github.com/realsenseai/realsense-ros/issues/2841>`_ from SamerKhshiboun: Remove Dashing, Eloquent, Foxy, L500 and SR300 support
+* PR `#2868 <https://github.com/realsenseai/realsense-ros/issues/2868>`_ from Arun-Prasad-V: Fix Pointcloud topic frame_id
+* PR `#2849 <https://github.com/realsenseai/realsense-ros/issues/2849>`_ from Arun-Prasad-V: Create /imu topic only when motion streams enabled
+* PR `#2847 <https://github.com/realsenseai/realsense-ros/issues/2847>`_ from Arun-Prasad-V: Updated rs_launch param names
+* PR `#2839 <https://github.com/realsenseai/realsense-ros/issues/2839>`_ from Arun-Prasad: Added ros2 examples
+* PR `#2861 <https://github.com/realsenseai/realsense-ros/issues/2861>`_ from SamerKhshiboun: fix readme and nodefactory for ros2 run
+* PR `#2859 <https://github.com/realsenseai/realsense-ros/issues/2859>`_ from PrasRsRos: Fix tests (topic now has camera name)
+* PR `#2857 <https://github.com/realsenseai/realsense-ros/issues/2857>`_ from lge-ros2: Apply camera name in topics
+* PR `#2840 <https://github.com/realsenseai/realsense-ros/issues/2840>`_ from SamerKhshiboun: Support Depth, IR and Color formats in ROS2
+* PR `#2764 <https://github.com/realsenseai/realsense-ros/issues/2764>`_ from lge-ros2 : support modifiable camera namespace
+* PR `#2830 <https://github.com/realsenseai/realsense-ros/issues/2830>`_ from SamerKhshiboun: Add RGBD + reduce changes between hkr and development
+* PR `#2811 <https://github.com/realsenseai/realsense-ros/issues/2811>`_ from Arun-Prasad-V: Exposing stream formats params to user
+* PR `#2825 <https://github.com/realsenseai/realsense-ros/issues/2825>`_ from SamerKhshiboun: Fix align_depth + add test
+* PR `#2822 <https://github.com/realsenseai/realsense-ros/issues/2822>`_ from Arun-Prasad-V: Updated rs_launch configurations
+* PR `#2726 <https://github.com/realsenseai/realsense-ros/issues/2726>`_ from PrasRsRos: Integration test template
+* PR `#2742 <https://github.com/realsenseai/realsense-ros/issues/2742>`_ from danielhonies:Update rs_launch.py
+* PR `#2806 <https://github.com/realsenseai/realsense-ros/issues/2806>`_ from Arun-Prasad-V: Enabling RGB8 Infrared stream
+* PR `#2799 <https://github.com/realsenseai/realsense-ros/issues/2799>`_ from SamerKhshiboun: Fix overriding frames on same topics/CV-images due to a bug in PR2759
+* PR `#2759 <https://github.com/realsenseai/realsense-ros/issues/2759>`_ from SamerKhshiboun: Cleanups and name fixes
+* Contributors: (=YG=) Hyunseok Yang, Arun Prasad, Arun-Prasad-V, Daniel Honies, Hyunseok, Madhukar Reddy Kadireddy, Nir, Nir Azkiel, PrasRsRos, Samer Khshiboun, SamerKhshiboun, deep0294, gwen2018, nairps
+
+4.54.1 (2023-06-27)
+-------------------
+* Applying AlignDepth filter after Pointcloud
+* Publish /aligned_depth_to_color topic only when color frame present
+* Support Iron distro
+* Protect empty string dereference
+* Fix: /tf and /static_tf topics' inconsistencies
+* Revamped the TF related code
+* Fixing TF frame links b/w multi camera nodes when using custom names
+* Updated TF descriptions in launch py and readme
+* Fixing /tf topic has only TFs of last started sensor
+* add D430i support
+* Fix Swapped TFs Axes
+* replace stereo module with depth module
+* use rs2_to_ros to replace stereo module with depth moudle
+* calculate extriniscs twice in two opposite ways to save inverting rotation matrix
+* fix matrix rotation
+* Merge branch 'ros2-development' into readme_fix
+* invert translation
+* Added 'publish_tf' param in rs launch files
+* Indentation corrections
+* Fix: Don't publish /tf when publish_tf is false
+* use playback device for rosbags
+* Avoid configuring dynamic_tf_broadcaster within tf_publish_rate param's callback
+* Fix lower FPS in D405, D455
+* update rs_launch.py to support enable_auto_exposure and manual exposure
+* fix timestamp calculation metadata header to be aligned with metadata json timestamp
+* Expose USB port in DeviceInfo service
+* Use latched QoS for Extrinsic topic when intra-process is used
+* add cppcheck to GHA
+* Fix Apache License Header and Intel Copyrights
+* apply copyrights and license on project
+* Enable intra-process communication for point clouds
+* Fix ros2 parameter descriptions and range values
+* T265 clean up
+* fix float_to_double method
+* realsense2_camera/src/sensor_params.cpp
+* remove T265 device from ROS Wrapper - step1
+* Enable D457
+* Fix hdr_merge filter initialization in ros2 launch
+* if default profile is not defined, take the first available profile as default
+* changed to static_cast and added descriptor name and type
+* remove extra ';'
+* remove unused variable format_str
+* publish point cloud via unique shared pointer
+* make source backward compatible to older versions of cv_bridge and rclcpp
+* add hdr_merge.enable and depth_module.hdr_enabled to rs_launch.py
+* fix compilation errors
+* fix tabs
+* if default profile is not defined, take the first available profile as default
+* Fix ros2 sensor controls steps and add control default value to param description
+* Publish static transforms when intra porocess communication is enabled
+* Properly read camera config files in rs_launch.py
+* fix deprecated API
+* Add D457
+* Windows bring-up
+* publish actual IMU optical frame ID in IMU messages
+* Publish static tf for IMU frames
+* fix extrinsics calculation
+* fix ordered_pc arg prefix
+* publish IMU frames only if unite/sync imu method is not none
+* Publish static tf for IMU frames
+* add D430i support
+* Contributors: Arun Prasad, Arun Prasad V, Arun-Prasad-V, Christian Rauch, Daniel Honies, Gilad Bretter, Nir Azkiel, NirAz, Pranav Dhulipala, Samer Khshiboun, SamerKhshiboun, Stephan Wirth, Xiangyu, Yadunund, nvidia
+
+4.51.1 (2022-09-13)
+-------------------
+* Fix crash when activating IMU & aligned depth together
+* Fix rosbag device loading by preventing set_option to HDR/Gain/Exposure
+* Support ROS2 Humble
+* Publish real frame rate of realsense camera node topics/publishers
+* No need to start/stop sensors for align depth changes
+* Fix colorizer filter which returns null reference ptr
+* Fix align_depth enable/disable
+* Add colorizer.enable to rs_launch.py
+* Add copyright and license to all ROS2-beta source files
+* Fix CUDA suffix for pointcloud and align_depth topics
+* Add ROS build farm pre-release to ci
+
+* Contributors: Eran, NirAz, SamerKhshiboun
+
+4.0.4 (2022-03-20)
+------------------
+* fix required packages for building debians for ros2-beta branch
+
+* Contributors: NirAz
+
+4.0.3 (2022-03-16)
+------------------
+* Support intra-process zero-copy
+* Update README
+* Fix Galactic deprecated-declarations compilation warning
+* Fix Eloquent compilation error
+
+* Contributors: Eran, Nir-Az, SamerKhshiboun
+
+4.0.2 (2022-02-24)
+------------------
+* version 4.4.0 changed to 4.0.0 in CHANGELOG
+* add frequency monitoring to /diagnostics topic.
+* fix topic_hz.py to recognize message type from topic name. (Naive)
+* move diagnostic updater for stream frequencies into the RosSensor class.
+* add frequency monitoring to /diagnostics topic.
+* fix galactic issue with undeclaring parameters
+* fix to support Rolling.
+* fix dynamic_params syntax.
+* fix issue with Galactic parameters set by default to static which prevents them from being undeclared.
+
+* Contributors: Haowei Wen, doronhi, remibettan
+
+4.0.1 (2022-02-01)
+------------------
+* fix reset issue when multiple devices are connected
+* fix /rosout issue
+* fix PID for D405 device
+* fix bug: frame_id is based on camera_name
+* unite_imu_method is now changeable in runtime.
+* fix motion module default values.
+* add missing extrinsics topics
+* fix crash when camera disconnects.
+* fix header timestamp for metadata messages.
+
+* Contributors: nomumu, JamesChooWK, benlev, doronhi
+
+4.0.0 (2021-11-17)
+-------------------
+* changed parameters: 
+  - "stereo_module", "l500_depth_sensor" are replaced by "depth_module"
+  - for video streams: <module>.profile replaces <stream>_width, <stream>_height, <stream>_fps
+  - removed paramets <stream>_frame_id, <stream>_optical_frame_id. frame_ids are defined by camera_name
+  - "filters" is removed. All filters (or post-processing blocks) are enabled/disabled using "<filter>.enable"
+  - "align_depth" is replaced with "align_depth.enable"
+  - "allow_no_texture_points", "ordered_pc" replaced by "pointcloud.allow_no_texture_points", "pointcloud.ordered_pc"
+  - "pointcloud_texture_stream", "pointcloud_texture_index" are replaced by "pointcloud.stream_filter", "pointcloud.stream_index_filter"
+
+* Allow enable/disable of sensors in runtime.
+* Allow enable/disable of filters in runtime.

@@ -1,0 +1,170 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package realsense2_camera_msgs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+4.58.3 (2026-07-20)
+-------------------
+* Push 4.58.3 release into ros2-master (`#3540 <https://github.com/IntelRealSense/realsense-ros/issues/3540>`_)
+* Update package.xml  to version 4.58.3
+* Merge master into ros2-development (4.58.2 release sync) (`#3529 <https://github.com/IntelRealSense/realsense-ros/issues/3529>`_)
+* Keep development versions after master merge (ROS 4.58.0, rgbd_plugin 0.1.0)
+* Merge remote-tracking branch 'origin/ros2-master' into ros2-development
+* Merge remote-tracking branch 'origin/r/4.58.2' into ros2-master
+  # Conflicts:
+  #	realsense2_camera/CHANGELOG.rst
+  #	realsense2_camera/CMakeLists.txt
+  #	realsense2_camera_msgs/CHANGELOG.rst
+  #	realsense2_description/CHANGELOG.rst
+  #	realsense2_ros_mqtt_bridge/CHANGELOG.rst
+* PR `#3501 <https://github.com/IntelRealSense/realsense-ros/issues/3501>`_ from Nir-Az: Push release 4.57.7 to master
+* Merge remote-tracking branch 'origin/r/4.57.7' into ros2-master
+* PR `#3482 <https://github.com/IntelRealSense/realsense-ros/issues/3482>`_ from Nir-Az: Push Release 4.57.6 to master
+* Merge remote-tracking branch 'origin/r/4.57.6' into ros2-master
+  # Conflicts:
+  #	realsense2_camera/include/constants.h
+  #	realsense2_camera/package.xml
+  #	realsense2_camera_msgs/package.xml
+  #	realsense2_description/package.xml
+  #	realsense2_ros_mqtt_bridge/package.xml
+  #	realsense2_ros_mqtt_bridge/setup.py
+* Update package.xml version
+* PR `#3477 <https://github.com/IntelRealSense/realsense-ros/issues/3477>`_ from Nir-Az: Push 4.57.4 release to ros2-master
+* Merge remote-tracking branch 'origin/r/4.57.4' into ros2-master
+  # Conflicts:
+  #	README.md
+  #	realsense2_camera/CHANGELOG.rst
+  #	realsense2_camera/CMakeLists.txt
+  #	realsense2_camera/include/constants.h
+  #	realsense2_camera/package.xml
+  #	realsense2_camera_msgs/CHANGELOG.rst
+  #	realsense2_camera_msgs/package.xml
+  #	realsense2_description/CHANGELOG.rst
+  #	realsense2_description/package.xml
+* 4.57.4
+* changelogs updated
+* Update realsense2_camera_msgs package.xml to 4.57.4
+* PR `#3400 <https://github.com/IntelRealSense/realsense-ros/issues/3400>`_ from Nir-Az: Fix releases dependencies
+* add missing depends
+* PR `#3399 <https://github.com/IntelRealSense/realsense-ros/issues/3399>`_ from IntelRealSense: Push r/4.56.4 to master
+* PR `#3398 <https://github.com/IntelRealSense/realsense-ros/issues/3398>`_ from ashrafk93: R/4.56.4
+* 4.56.4
+* bump version to 4.56.4
+* Contributors: Ashraf Kattoura, Nir Azkiel, Remi Bettan, remibettan
+
+4.58.2 (2026-06-15)
+-------------------
+* Update package.xml to 4.58.2
+* PR `#3507 <https://github.com/IntelRealSense/realsense-ros/issues/3507>`_ from Nir-Az: align ros2-development to r/4.57.7
+* versions fix
+* Merge remote-tracking branch 'origin/r/4.57.7' into ros2-development
+  # Conflicts:
+* Revert "TEST: Remove action_msgs to verify CI catches it"
+  This reverts commit 10c0aa79dae72aa366d3c387308620a905e2f9bd.
+* TEST: Remove action_msgs to verify CI catches it
+  This commit should cause CI to fail. Revert after verification.
+  Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+* Revert "TEST: Remove action_msgs dependency to verify CI catches it"
+  This reverts commit 386560cee21b615ff722ca9faea55fcbdb99432f.
+* TEST: Remove action_msgs dependency to verify CI catches it
+  This commit intentionally removes the action_msgs dependency from
+  realsense2_camera_msgs/package.xml to verify that the ros-core based
+  CI detects missing dependency declarations. This commit should be
+  reverted after verification.
+  Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+* 4.57.8
+* add release notes
+* Update package.xml fix co pilot comment
+* PR `#3503 <https://github.com/IntelRealSense/realsense-ros/issues/3503>`_ from realsenseai: Update package.xml to incude missing depends
+* Update package.xml fix co pilot comments
+* Update package.xml to incude missing depends
+* Update package.xml to include missing depends
+* 4.57.7
+* add change log
+* add release noted
+* Update package.xml
+* PR `#3485 <https://github.com/IntelRealSense/realsense-ros/issues/3485>`_ from Nir-Az: Fix GHA flow
+* install missing packages
+* PR `#3462 <https://github.com/IntelRealSense/realsense-ros/issues/3462>`_ from remibettan: intel removed and github user changed
+* many intel removed and github user changed
+* PR `#3447 <https://github.com/IntelRealSense/realsense-ros/issues/3447>`_ from Nir-Az: Update maintainers before Realsense migration
+* update maintainers list
+* PR `#3442 <https://github.com/IntelRealSense/realsense-ros/issues/3442>`_ from remibettan/restore-minor-version-to-0: minor versions back to 0
+* minor back to 0
+* PR `#3441 <https://github.com/IntelRealSense/realsense-ros/issues/3441>`_ from remibettan/ros2-development: merging 4.57.3 to ros2-development
+* Merge tag '4.57.3' into ros2-development
+
+4.57.8 (2026-03-27)
+-------------------
+* Update package.xml fix co pilot comment
+* Update package.xml to include missing depends
+* Contributors: Nir Azkiel
+
+4.57.7 (2026-03-24)
+-------------------
+* add release noted
+* Update package.xml
+* PR `#3485 <https://github.com/IntelRealSense/realsense-ros/issues/3485>`_ from Nir-Az: Fix GHA flow
+* install missing packages
+* PR `#3462 <https://github.com/IntelRealSense/realsense-ros/issues/3462>`_ from remibettan: intel removed and github user changed
+* many intel removed and github user changed
+* PR `#3447 <https://github.com/IntelRealSense/realsense-ros/issues/3447>`_ from Nir-Az: Update maintainers before Realsense migration
+* update maintainers list
+* PR `#3442 <https://github.com/IntelRealSense/realsense-ros/issues/3442>`_ from remibettan/restore-minor-version-to-0: minor versions back to 0
+* minor back to 0
+* PR `#3441 <https://github.com/IntelRealSense/realsense-ros/issues/3441>`_ from remibettan/ros2-development: merging 4.57.3 to ros2-development
+* Merge tag '4.57.3' into ros2-development
+* Contributors: Nir Azkiel, Remi Bettan, remibettan
+
+4.57.3 (2025-09-15)
+-------------------
+* PR `#3417 <https://github.com/realsenseai/realsense-ros/issues/3417>`_ from remibettan: Merging ros2 hkr to ros2 dev final
+* PR `#3410 <https://github.com/realsenseai/realsense-ros/issues/3410>`_ from Nir-Az: Update copyrights
+* PR `#32 <https://github.com/realsenseai/realsense-ros/issues/32>`_ from SamerKhshiboun: Support HWM command as ROS2 service and in the ROS-MQTT bridge node
+* PR `#30 <https://github.com/realsenseai/realsense-ros/issues/30>`_ from SamerKhshiboun: Use new apis of SIC and SP that works directly with JSON inputs/outputs
+* PR `#13 <https://github.com/realsenseai/realsense-ros/issues/13>`_ from SamerKhshiboun: Sٍupport set/get application config as ROS service and in ROS-MQTT bridge
+* PR `#11 <https://github.com/realsenseai/realsense-ros/issues/11>`_ from SamerKhshiboun: Align to ros2-development - 04.07.224
+* PR `#3153 <https://github.com/realsenseai/realsense-ros/issues/3153>`_ from SamerKhshiboun: TC | Fix feedback and update readme
+* PR `#3138 <https://github.com/realsenseai/realsense-ros/issues/3138>`_ from SamerKhshiboun: Support Triggered Calibration as ROS2 Action
+* PR `#3125 <https://github.com/realsenseai/realsense-ros/issues/3125>`_ from SamerKhshiboun: Support calibration config read/write services
+* PR `#3100 <https://github.com/realsenseai/realsense-ros/issues/3100>`_ from jiuguangw: Suppress CMake warnings
+* PR `#3 <https://github.com/realsenseai/realsense-ros/issues/3>`_ from SamerKhshiboun: Support sic read write services
+* PR `#2 <https://github.com/realsenseai/realsense-ros/issues/2>`_ from SamerKhshiboun: Support Safety Preset Read/Write Services
+* PR `#2802 <https://github.com/realsenseai/realsense-ros/issues/2802>`_ from SamerKhshiboun: add new RGBD topic
+* Contributors: Jiuguang Wang, Nir Azkiel, PrasRsRos, Remi Bettan, Samer Khshiboun, SamerKhshiboun, remibettan
+
+4.55.1 (2024-05-28)
+-------------------
+* PR `#2830 <https://github.com/realsenseai/realsense-ros/issues/2830>`_ from SamerKhshiboun: Add RGBD + reduce changes between hkr and development
+* Contributors: SamerKhshiboun
+
+4.54.1 (2023-06-27)
+-------------------
+* add info about extrinsic msg format in Extrinsics.msg and README.md
+* Expose USB port in DeviceInfo service
+* Fix Apache License Header and Intel Copyrights
+* apply copyrights and license on project
+* Contributors: Arun Prasad, Nir Azkiel, SamerKhshiboun, Stephan Wirth
+
+4.51.1 (2022-09-13)
+-------------------
+* Add copyright and license to all ROS2-beta source files
+
+* Contributors: SamerKhshiboun
+
+4.0.4 (2022-03-20)
+------------------
+
+4.0.3 (2022-03-16)
+------------------
+
+4.0.2 (2022-02-24)
+------------------
+
+4.0.1 (2022-02-01)
+------------------
+
+3.2.3 (2021-11-11)
+------------------
+* publish metadata
+* Add service: device_info
+* Contributors: doronhi

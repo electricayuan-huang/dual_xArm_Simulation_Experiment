@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="xarm_gripper_ros2_control" params="prefix:='' 
+    ros2_control_plugin:='uf_robot_hardware/UFRobotFakeSystemHardware' use_mimic:='false'">
+    <ros2_control name="${prefix}XArmGripperSystem" type="system">
+      <hardware>
+        <plugin>${ros2_control_plugin}</plugin>
+      </hardware>
+       <!-- Fixed-angle gripper mode: all six joints receive position targets. -->
+       <joint name="${prefix}drive_joint">
+         <command_interface name="position"/>
+         <state_interface name="position"/>
+         <state_interface name="velocity"/>
+       </joint>
+      <joint name="${prefix}left_finger_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}left_inner_knuckle_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}right_outer_knuckle_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}right_finger_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+      <joint name="${prefix}right_inner_knuckle_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+    </ros2_control>
+  </xacro:macro>
+</robot>

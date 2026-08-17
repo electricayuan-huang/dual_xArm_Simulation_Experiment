@@ -1,0 +1,36 @@
+controller_manager:
+  ros__parameters:
+    xarm_gripper_traj_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+xarm_gripper_traj_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - drive_joint
+      - left_finger_joint
+      - left_inner_knuckle_joint
+      - right_outer_knuckle_joint
+      - right_finger_joint
+      - right_inner_knuckle_joint
+    initial_positions:
+      drive_joint: 0.0
+      left_finger_joint: 0.0
+      left_inner_knuckle_joint: 0.0
+      right_outer_knuckle_joint: 0.0
+      right_finger_joint: 0.0
+      right_inner_knuckle_joint: 0.0
+      right_inner_knuckle_joint: 0.0
+    constraints:
+      goal_time: 3.0
+      stopped_velocity_tolerance: 0.05
+      drive_joint: {goal: 0.02}
+      left_finger_joint: {goal: 0.02}
+      left_inner_knuckle_joint: {goal: 0.02}
+      right_outer_knuckle_joint: {goal: 0.02}
+      right_finger_joint: {goal: 0.02}
+      right_inner_knuckle_joint: {goal: 0.02}

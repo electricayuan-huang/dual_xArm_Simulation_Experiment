@@ -1,0 +1,418 @@
+#!/usr/bin/env python3
+# Software License Agreement (BSD License)
+#
+# Copyright (c) 2021, UFACTORY, Inc.
+# All rights reserved.
+#
+# Author: Vinman <vinman.wen@ufactory.cc> <vinman.cub@gmail.com>
+
+import os
+import yaml
+from pathlib import Path
+from ament_index_python import get_package_share_directory
+from launch.launch_description_sources import load_python_launch_file_as_module
+from launch import LaunchDescription
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, RegisterEventHandler
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
+from launch.conditions import IfCondition
+from launch_ros.substitutions import FindPackageShare
+from launch.event_handlers import OnProcessExit, OnProcessStart
+from launch.actions import OpaqueFunction
+from uf_ros_lib.uf_robot_utils import get_xacro_content, generate_ros2_control_params_temp_file
+
+    
+def launch_setup(context, *args, **kwargs):
+    prefix = LaunchConfiguration('prefix', default='')
+    hw_ns = LaunchConfiguration('hw_ns', default='xarm')
+    limited = LaunchConfiguration('limited', default=False)
+    effort_control = LaunchConfiguration('effort_control', default=False)
+    velocity_control = LaunchConfiguration('velocity_control', default=False)
+    add_gripper = LaunchConfiguration('add_gripper', default=False)
+    add_vacuum_gripper = LaunchConfiguration('add_vacuum_gripper', default=False)
+    add_bio_gripper = LaunchConfiguration('add_bio_gripper', default=False)
+    dof = LaunchConfiguration('dof', default=7)
+    robot_type = LaunchConfiguration('robot_type', default='xarm')
+    ros2_control_plugin = LaunchConfiguration('ros2_control_plugin', default='')
+
+    gripper_version = LaunchConfiguration('gripper_version', default='G1')
+    
+    add_realsense_d435i = LaunchConfiguration('add_realsense_d435i', default=False)
+    add_d435i_links = LaunchConfiguration('add_d435i_links', default=True)
+    model1300 = LaunchConfiguration('model1300', default=False)
+    robot_sn = LaunchConfiguration('robot_sn', default='')
+    attach_to = LaunchConfiguration('attach_to', default='world')
+    attach_xyz = LaunchConfiguration('attach_xyz', default='"0 0 0"')
+    attach_rpy = LaunchConfiguration('attach_rpy', default='"0 0 0"')
+    spawn_xyz = LaunchConfiguration('spawn_xyz', default='"-0.2 -0.5 1.021"')
+    spawn_rpy = LaunchConfiguration('spawn_rpy', default='"0 0 -1.571"')
+    initial_joint1 = LaunchConfiguration('initial_joint1', default='')
+    initial_joint2 = LaunchConfiguration('initial_joint2', default='')
+    initial_joint3 = LaunchConfiguration('initial_joint3', default='')
+    initial_joint4 = LaunchConfiguration('initial_joint4', default='')
+    initial_joint5 = LaunchConfiguration('initial_joint5', default='')
+    initial_joint6 = LaunchConfiguration('initial_joint6', default='')
+
+    add_other_geometry = LaunchConfiguration('add_other_geometry', default=False)
+    geometry_type = LaunchConfiguration('geometry_type', default='box')
+    geometry_mass = LaunchConfiguration('geometry_mass', default=0.1)
+    geometry_height = LaunchConfiguration('geometry_height', default=0.1)
+    geometry_radius = LaunchConfiguration('geometry_radius', default=0.1)
+    geometry_length = LaunchConfiguration('geometry_length', default=0.1)
+    geometry_width = LaunchConfiguration('geometry_width', default=0.1)
+    geometry_mesh_filename = LaunchConfiguration('geometry_mesh_filename', default='')
+    geometry_mesh_origin_xyz = LaunchConfiguration('geometry_mesh_origin_xyz', default='"0 0 0"')
+    geometry_mesh_origin_rpy = LaunchConfiguration('geometry_mesh_origin_rpy', default='"0 0 0"')
+    geometry_mesh_tcp_xyz = LaunchConfiguration('geometry_mesh_tcp_xyz', default='"0 0 0"')
+    geometry_mesh_tcp_rpy = LaunchConfiguration('geometry_mesh_tcp_rpy', default='"0 0 0"')
+    kinematics_suffix = LaunchConfiguration('kinematics_suffix', default='')
+    
+    load_controller = LaunchConfiguration('load_controller', default=False)
+    show_rviz = LaunchConfiguration('show_rviz', default=False)
+    no_gui_ctrl = LaunchConfiguration('no_gui_ctrl', default=False)
+
+    ros_namespace = LaunchConfiguration('ros_namespace', default='').perform(context)
+    moveit_config_dump = LaunchConfiguration('moveit_config_dump', default='')
+
+    gz_type = LaunchConfiguration('gz_type', default='gazebo').perform(context)
+    gz_type = 'ignition' if gz_type == 'ign' else gz_type
+    spawn_xyz_values = spawn_xyz.perform(context).strip('"').split()
+    spawn_rpy_values = spawn_rpy.perform(context).strip('"').split()
+    initial_joint_values = {
+        'joint1': initial_joint1.perform(context),
+        'joint2': initial_joint2.perform(context),
+        'joint3': initial_joint3.perform(context),
+        'joint4': initial_joint4.perform(context),
+        'joint5': initial_joint5.perform(context),
+        'joint6': initial_joint6.perform(context),
+    }
+    initial_positions = {
+        joint: float(value)
+        for joint, value in initial_joint_values.items()
+        if value != ''
+    }
+    if ros2_control_plugin.perform(context) == '':
+        ros2_control_plugin = 'gz_ros2_control/GazeboSimSystem' if gz_type == 'gz' else 'ign_ros2_control/IgnitionSystem' if gz_type == 'ignition' else 'gazebo_ros2_control/GazeboSystem'
+
+    moveit_config_dump = moveit_config_dump.perform(context)
+    moveit_config_dict = yaml.load(moveit_config_dump, Loader=yaml.FullLoader) if moveit_config_dump else {}
+    moveit_config_package_name = 'xarm_moveit_config'
+    xarm_type = '{}{}'.format(robot_type.perform(context), dof.perform(context) if robot_type.perform(context) in ('xarm', 'lite') else '')
+    
+    if not moveit_config_dict:
+        # ros2 control params
+        ros2_control_params = generate_ros2_control_params_temp_file(
+            os.path.join(get_package_share_directory('xarm_controller'), 'config', '{}_controllers.yaml'.format(xarm_type)),
+            prefix=prefix.perform(context), 
+            add_gripper=add_gripper.perform(context) in ('True', 'true'),
+            add_bio_gripper=add_bio_gripper.perform(context) in ('True', 'true'),
+            ros_namespace=ros_namespace,
+            update_rate=1000,
+            use_sim_time=True,
+            robot_type=robot_type.perform(context),
+            initial_positions=initial_positions,
+        )
+        # robot_description
+        robot_description = {
+            'robot_description': get_xacro_content(
+                context,
+                xacro_file=Path(get_package_share_directory('xarm_description')) / 'urdf' / 'xarm_device.urdf.xacro', 
+                dof=dof,
+                robot_type=robot_type,
+                prefix=prefix,
+                hw_ns=hw_ns,
+                limited=limited,
+                effort_control=effort_control,
+                velocity_control=velocity_control,
+                model1300=model1300,
+                robot_sn=robot_sn,
+                attach_to=attach_to,
+                attach_xyz=attach_xyz,
+                attach_rpy=attach_rpy,
+                kinematics_suffix=kinematics_suffix,
+                ros2_control_plugin=ros2_control_plugin,
+                ros2_control_params=ros2_control_params,
+                gripper_version=gripper_version,
+                add_gripper=add_gripper,
+                add_vacuum_gripper=add_vacuum_gripper,
+                add_bio_gripper=add_bio_gripper,
+                add_realsense_d435i=add_realsense_d435i,
+                add_d435i_links=add_d435i_links,
+                add_other_geometry=add_other_geometry,
+                geometry_type=geometry_type,
+                geometry_mass=geometry_mass,
+                geometry_height=geometry_height,
+                geometry_radius=geometry_radius,
+                geometry_length=geometry_length,
+                geometry_width=geometry_width,
+                geometry_mesh_filename=geometry_mesh_filename,
+                geometry_mesh_origin_xyz=geometry_mesh_origin_xyz,
+                geometry_mesh_origin_rpy=geometry_mesh_origin_rpy,
+                geometry_mesh_tcp_xyz=geometry_mesh_tcp_xyz,
+                geometry_mesh_tcp_rpy=geometry_mesh_tcp_rpy,
+            )
+        }
+        moveit_config_dict = robot_description
+    else:
+        robot_description = {'robot_description': moveit_config_dict['robot_description']}
+
+    # robot state publisher node
+    robot_state_publisher_node = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        output='screen',
+        parameters=[{'use_sim_time': True}, robot_description],
+        remappings=[
+            ('/tf', 'tf'),
+            ('/tf_static', 'tf_static'),
+        ]
+    )
+
+    if gz_type == 'gz':
+        gazebo_world = PathJoinSubstitution([FindPackageShare('xarm_gazebo'), 'worlds', 'table_gz.world'])
+        # ros_gz_sim/launch/gz_sim.launch.py
+        gazebo_launch = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(PathJoinSubstitution([FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py'])),
+            launch_arguments={
+                # Use the physics engine declared by table_gz.world. The old
+                # explicit Bullet plugin name is not available in Ignition
+                # Gazebo 6 and prevents the world from starting.
+                'gz_args': ' -r -v 3 {}'.format(gazebo_world.perform(context)),
+            }.items(),
+        )
+        # gazebo spawn entity node
+        spawn_arguments = [
+            '-topic', 'robot_description',
+            '-name', 'UF_ROBOT',
+            '-x', spawn_xyz_values[0],
+            '-y', spawn_xyz_values[1],
+            '-z', spawn_xyz_values[2],
+            '-Y', spawn_rpy_values[2],
+        ]
+        if initial_positions:
+            for joint, value in initial_positions.items():
+                spawn_arguments.extend(['-J', '{}{}'.format(prefix.perform(context), joint), str(value)])
+        else:
+            spawn_arguments.extend(['-J', '{}joint5'.format(prefix.perform(context)), '-1.5708'])
+
+        gazebo_spawn_entity_node = Node(
+            package="ros_gz_sim",
+            executable="create",
+            output='screen',
+            arguments=spawn_arguments,
+            parameters=[{'use_sim_time': True}],
+        )
+        # Gz - ROS Bridge
+        args = [
+            # Clock (GZ -> ROS2)
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+            # # Joint states (GZ -> ROS2)
+            # '/xarm/joint_states@sensor_msgs/msg/JointState[gz.msgs.Model',
+        ]
+        if add_realsense_d435i.perform(context) == 'true':
+            args.extend([
+                '/camera/color/image_raw@sensor_msgs/msg/Image@gz.msgs.Image',
+                '/camera/color/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo',
+                '/camera/infra1/image_raw@sensor_msgs/msg/Image@gz.msgs.Image',
+                '/camera/infra1/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo',
+                '/camera/infra2/image_raw@sensor_msgs/msg/Image@gz.msgs.Image',
+                '/camera/infra2/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo',
+                '/camera/depth/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked',
+                '/camera/depth/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo',
+                '/camera/depth/image@sensor_msgs/msg/Image@gz.msgs.Image',
+            ])
+        gz_bridge = Node(
+            package='ros_gz_bridge',
+            executable='parameter_bridge',
+            arguments=args,
+            remappings=[
+                # ('/world/empty/model/UF_ROBOT/joint_state', 'joint_states'),
+                # ('/camera/depth/image', '/camera/depth/image_raw'),
+            ],
+            output='screen'
+        )
+    elif gz_type == 'ignition':
+        gazebo_world = PathJoinSubstitution([FindPackageShare('xarm_gazebo'), 'worlds', 'table_gz.world'])
+        # ros_ign_gazebo/launch/ign_gazebo.launch.py
+        gazebo_launch = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(PathJoinSubstitution([FindPackageShare('ros_ign_gazebo'), 'launch', 'ign_gazebo.launch.py'])),
+            launch_arguments={
+                'ign_args': ' -r -v 3 {}'.format(gazebo_world.perform(context)),
+            }.items(),
+        )
+        # gazebo spawn entity node
+        gazebo_spawn_entity_node = Node(
+            package="ros_ign_gazebo",
+            executable="create",
+            output='screen',
+            arguments=[
+                '-topic', 'robot_description',
+                # '-name', '{}'.format(xarm_type),
+                '-name', 'UF_ROBOT',
+                '-x', spawn_xyz_values[0],
+                '-y', spawn_xyz_values[1],
+                '-z', spawn_xyz_values[2],
+                '-Y', spawn_rpy_values[2],
+                # '-allow_renaming', 'true'
+            ],
+            parameters=[{'use_sim_time': True}],
+        )
+        # IGN - ROS Bridge
+        args = [
+            # Clock (IGN -> ROS2)
+            '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
+            # # Joint states (IGN -> ROS2)
+            # '/xarm/joint_states@sensor_msgs/msg/JointState[ignition.msgs.Model',
+        ]
+        if add_realsense_d435i.perform(context) == 'true':
+            args.extend([
+                '/camera/color/image_raw@sensor_msgs/msg/Image@ignition.msgs.Image',
+                '/camera/color/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/camera/infra1/image_raw@sensor_msgs/msg/Image@ignition.msgs.Image',
+                '/camera/infra1/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/camera/infra2/image_raw@sensor_msgs/msg/Image@ignition.msgs.Image',
+                '/camera/infra2/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/camera/depth/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
+                '/camera/depth/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
+                '/camera/depth/image@sensor_msgs/msg/Image@ignition.msgs.Image',
+            ])
+        gz_bridge = Node(
+            package='ros_ign_bridge',
+            executable='parameter_bridge',
+            arguments=args,
+            # remappings=[
+            #     ('/xarm/joint_states', 'joint_states'),
+            # ],
+            output='screen'
+        )
+    else:
+        gazebo_world = PathJoinSubstitution([FindPackageShare('xarm_gazebo'), 'worlds', 'table.world'])
+        # gazebo_ros/launch/gazebo.launch.py
+        gazebo_launch = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(PathJoinSubstitution([FindPackageShare('gazebo_ros'), 'launch', 'gazebo.launch.py'])),
+            launch_arguments={
+                'world': gazebo_world,
+                'server_required': 'true',
+                'gui_required': 'true',
+            }.items(),
+        )
+        # gazebo spawn entity node
+        gazebo_spawn_entity_node = Node(
+            package="gazebo_ros",
+            executable="spawn_entity.py",
+            output='screen',
+            arguments=[
+                '-topic', 'robot_description',
+                # '-entity', '{}'.format(xarm_type),
+                '-entity', 'UF_ROBOT',
+                '-x', spawn_xyz_values[0],
+                '-y', spawn_xyz_values[1],
+                '-z', spawn_xyz_values[2],
+                '-Y', spawn_rpy_values[2],
+            ],
+            parameters=[{'use_sim_time': True}],
+        )
+        if initial_positions:
+            for joint, value in initial_positions.items():
+                gazebo_spawn_entity_node.arguments.extend(
+                    ['-J', '{}{}'.format(prefix.perform(context), joint), str(value)])
+        else:
+            gazebo_spawn_entity_node.arguments.extend(
+                ['-J', '{}joint5'.format(prefix.perform(context)), '-1.5708'])
+
+    # rviz with moveit configuration
+    rviz_config_file = PathJoinSubstitution([FindPackageShare(moveit_config_package_name), 'rviz', 'planner.rviz' if no_gui_ctrl.perform(context) == 'true' else 'moveit.rviz'])
+    rviz2_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', rviz_config_file],
+        parameters=[
+            {
+                'robot_description': moveit_config_dict.get('robot_description', ''),
+                'robot_description_semantic': moveit_config_dict.get('robot_description_semantic', ''),
+                'robot_description_kinematics': moveit_config_dict.get('robot_description_kinematics', {}),
+                'robot_description_planning': moveit_config_dict.get('robot_description_planning', {}),
+                'planning_pipelines': moveit_config_dict.get('planning_pipelines', {}),
+                'use_sim_time': True
+            }
+        ],
+        # condition=IfCondition(show_rviz),
+        remappings=[
+            ('/tf', 'tf'),
+            ('/tf_static', 'tf_static'),
+        ]
+    )
+
+    # Load controllers
+    controllers = [
+        'joint_state_broadcaster',
+        '{}{}_traj_controller'.format(prefix.perform(context), xarm_type),
+    ]
+    if add_gripper.perform(context) in ('True', 'true'):
+        controllers.append('{}{}_gripper_traj_controller'.format(prefix.perform(context), robot_type.perform(context)))
+    elif robot_type.perform(context) != 'lite' and add_bio_gripper.perform(context) in ('True', 'true'):
+        controllers.append('{}bio_gripper_traj_controller'.format(prefix.perform(context)))
+    
+    controller_nodes = []
+    if load_controller.perform(context) in ('True', 'true'):
+        for controller in controllers:
+            controller_nodes.append(Node(
+                package='controller_manager',
+                executable='spawner',
+                output='screen',
+                arguments=[
+                    controller,
+                    '--controller-manager', '{}/controller_manager'.format(ros_namespace)
+                ],
+                parameters=[{'use_sim_time': True}],
+            ))
+
+    nodes = [
+        RegisterEventHandler(
+            event_handler=OnProcessStart(
+                target_action=robot_state_publisher_node,
+                on_start=gazebo_launch,
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessStart(
+                target_action=robot_state_publisher_node,
+                on_start=gazebo_spawn_entity_node,
+            )
+        ),
+        RegisterEventHandler(
+            condition=IfCondition(show_rviz),
+            event_handler=OnProcessExit(
+                target_action=gazebo_spawn_entity_node,
+                on_exit=rviz2_node,
+            )
+        ),
+        robot_state_publisher_node
+    ]
+
+    if gz_type == 'gz' or gz_type == 'ignition':
+        nodes.append(RegisterEventHandler(
+            event_handler=OnProcessStart(
+                target_action=robot_state_publisher_node,
+                on_start=gz_bridge,
+            )
+        ))
+
+    if len(controller_nodes) > 0:
+        nodes.append(RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=gazebo_spawn_entity_node,
+                on_exit=controller_nodes,
+            )
+        ))
+
+    return nodes
+
+
+def generate_launch_description():
+    return LaunchDescription([
+        OpaqueFunction(function=launch_setup)
+    ])

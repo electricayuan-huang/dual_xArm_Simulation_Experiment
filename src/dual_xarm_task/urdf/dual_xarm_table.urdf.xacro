@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="DUAL_UF_ROBOT">
+  <xacro:arg name="prefix_1" default="L_"/>
+  <xacro:arg name="prefix_2" default="R_"/>
+  <xacro:arg name="dof_1" default="6"/>
+  <xacro:arg name="dof_2" default="6"/>
+  <xacro:arg name="robot_type_1" default="xarm"/>
+  <xacro:arg name="robot_type_2" default="xarm"/>
+  <xacro:arg name="hw_ns" default="xarm"/>
+  <xacro:arg name="limited" default="true"/>
+  <xacro:arg name="effort_control" default="false"/>
+  <xacro:arg name="velocity_control" default="false"/>
+  <xacro:arg name="ros2_control_plugin" default="ign_ros2_control/IgnitionSystem"/>
+  <xacro:arg name="ros2_control_params" default=""/>
+
+  <xacro:arg name="add_gripper_1" default="false"/>
+  <xacro:arg name="add_gripper_2" default="true"/>
+  <xacro:arg name="add_vacuum_gripper_1" default="false"/>
+  <xacro:arg name="add_vacuum_gripper_2" default="false"/>
+  <xacro:arg name="add_bio_gripper_1" default="false"/>
+  <xacro:arg name="add_bio_gripper_2" default="false"/>
+  <xacro:arg name="gripper_version_1" default="G1"/>
+  <xacro:arg name="gripper_version_2" default="G1"/>
+
+  <xacro:arg name="add_other_geometry_1" default="true"/>
+  <xacro:arg name="add_other_geometry_2" default="false"/>
+  <xacro:arg name="geometry_type_1" default="cylinder"/>
+  <xacro:arg name="geometry_mass_1" default="0.12"/>
+  <xacro:arg name="geometry_height_1" default="0.14"/>
+  <xacro:arg name="geometry_radius_1" default="0.008"/>
+  <xacro:arg name="geometry_length_1" default="0.14"/>
+  <xacro:arg name="geometry_width_1" default="0.02"/>
+  <xacro:arg name="geometry_type_2" default="box"/>
+  <xacro:arg name="geometry_mass_2" default="0.1"/>
+  <xacro:arg name="geometry_height_2" default="0.1"/>
+  <xacro:arg name="geometry_radius_2" default="0.1"/>
+  <xacro:arg name="geometry_length_2" default="0.1"/>
+  <xacro:arg name="geometry_width_2" default="0.1"/>
+  <xacro:arg name="geometry_mesh_filename_1" default=""/>
+  <xacro:arg name="geometry_mesh_filename_2" default=""/>
+  <xacro:arg name="geometry_mesh_origin_xyz_1" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_origin_xyz_2" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_origin_rpy_1" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_origin_rpy_2" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_tcp_xyz_1" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_tcp_xyz_2" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_tcp_rpy_1" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_tcp_rpy_2" default="0 0 0"/>
+
+  <!-- A: R_ gripper at the left side; B: L_ rod at the right side. -->
+  <!-- Both bases face the common +Y working direction. -->
+  <xacro:arg name="base_xyz_1" default="0.25 -0.25 1.03"/>
+  <xacro:arg name="base_xyz_2" default="-0.25 -0.25 1.03"/>
+  <xacro:arg name="base_rpy_1" default="0 0 1.5708"/>
+  <xacro:arg name="base_rpy_2" default="0 0 1.5708"/>
+  <xacro:arg name="add_fixed_camera" default="true"/>
+  <xacro:arg name="fixed_camera_xyz" default="0 -0.42 1.015"/>
+  <xacro:arg name="fixed_camera_rpy" default="0 0.70 1.5708"/>
+  <xacro:arg name="fixed_camera_horizontal_fov" default="1.57"/>
+  <xacro:arg name="fixed_camera_visualize" default="true"/>
+  <xacro:arg name="gazebo_self_collide" default="false"/>
+
+  <xacro:include filename="$(find xarm_description)/urdf/xarm_device_macro.xacro"/>
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435i.urdf.xacro"/>
+  <xacro:property name="fixed_camera_ros2_control_plugin" value="$(arg ros2_control_plugin)"/>
+
+  <!-- Sensors are attached to the fixed camera frames; the world owns the
+       single Ignition Sensors system plugin. -->
+  <xacro:macro name="fixed_camera_sim_sensors">
+    <gazebo reference="camera_depth_frame">
+      <sensor name="camera_depth_sensor" type="rgbd_camera">
+        <camera name="camera_depth">
+          <horizontal_fov>$(arg fixed_camera_horizontal_fov)</horizontal_fov>
+          <optical_frame_id>camera_depth_optical_frame</optical_frame_id>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.10</near>
+            <far>10.0</far>
+          </clip>
+          <depth_camera>
+            <clip>
+              <near>0.10</near>
+              <far>10.0</far>
+            </clip>
+          </depth_camera>
+          <camera_info_topic>camera/depth/camera_info</camera_info_topic>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>0</visualize>
+        <topic>camera/depth</topic>
+      </sensor>
+    </gazebo>
+
+    <gazebo reference="camera_color_frame">
+      <sensor name="camera_color_sensor" type="camera">
+        <camera name="camera_color">
+          <horizontal_fov>$(arg fixed_camera_horizontal_fov)</horizontal_fov>
+          <optical_frame_id>camera_color_optical_frame</optical_frame_id>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>RGB_INT8</format>
+          </image>
+          <clip>
+            <near>0.10</near>
+            <far>10.0</far>
+          </clip>
+          <camera_info_topic>camera/color/camera_info</camera_info_topic>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>$(arg fixed_camera_visualize)</visualize>
+        <topic>camera/color/image_raw</topic>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- The robot bases sit on the 1 m tabletop. The arms remain in their
+       normal mounting orientation and are planned toward the tabletop. -->
+  <xacro:xarm_device
+    prefix="$(arg prefix_1)"
+    hw_ns="$(arg hw_ns)"
+    limited="$(arg limited)"
+    effort_control="$(arg effort_control)"
+    velocity_control="$(arg velocity_control)"
+    add_gripper="$(arg add_gripper_1)"
+    add_vacuum_gripper="$(arg add_vacuum_gripper_1)"
+    add_bio_gripper="$(arg add_bio_gripper_1)"
+    dof="$(arg dof_1)"
+    robot_type="$(arg robot_type_1)"
+    ros2_control_plugin="$(arg ros2_control_plugin)"
+    ros2_control_params="$(arg ros2_control_params)"
+    attach_to="world"
+    attach_xyz="$(arg base_xyz_1)"
+    attach_rpy="$(arg base_rpy_1)"
+    create_attach_link="true"
+    add_other_geometry="$(arg add_other_geometry_1)"
+    geometry_type="$(arg geometry_type_1)"
+    geometry_mass="$(arg geometry_mass_1)"
+    geometry_height="$(arg geometry_height_1)"
+    geometry_radius="$(arg geometry_radius_1)"
+    geometry_length="$(arg geometry_length_1)"
+    geometry_width="$(arg geometry_width_1)"
+    geometry_mesh_filename="$(arg geometry_mesh_filename_1)"
+    geometry_mesh_origin_xyz="$(arg geometry_mesh_origin_xyz_1)"
+    geometry_mesh_origin_rpy="$(arg geometry_mesh_origin_rpy_1)"
+    geometry_mesh_tcp_xyz="$(arg geometry_mesh_tcp_xyz_1)"
+    geometry_mesh_tcp_rpy="$(arg geometry_mesh_tcp_rpy_1)"
+    gripper_version="$(arg gripper_version_1)"
+     load_gazebo_plugin="false"
+     gazebo_self_collide="$(arg gazebo_self_collide)"/>
+
+  <xacro:xarm_device
+    prefix="$(arg prefix_2)"
+    hw_ns="$(arg hw_ns)"
+    limited="$(arg limited)"
+    effort_control="$(arg effort_control)"
+    velocity_control="$(arg velocity_control)"
+    add_gripper="$(arg add_gripper_2)"
+    add_vacuum_gripper="$(arg add_vacuum_gripper_2)"
+    add_bio_gripper="$(arg add_bio_gripper_2)"
+    dof="$(arg dof_2)"
+    robot_type="$(arg robot_type_2)"
+    ros2_control_plugin="$(arg ros2_control_plugin)"
+    ros2_control_params="$(arg ros2_control_params)"
+    attach_to="world"
+    attach_xyz="$(arg base_xyz_2)"
+    attach_rpy="$(arg base_rpy_2)"
+    create_attach_link="false"
+    add_other_geometry="$(arg add_other_geometry_2)"
+    geometry_type="$(arg geometry_type_2)"
+    geometry_mass="$(arg geometry_mass_2)"
+    geometry_height="$(arg geometry_height_2)"
+    geometry_radius="$(arg geometry_radius_2)"
+    geometry_length="$(arg geometry_length_2)"
+    geometry_width="$(arg geometry_width_2)"
+    geometry_mesh_filename="$(arg geometry_mesh_filename_2)"
+    geometry_mesh_origin_xyz="$(arg geometry_mesh_origin_xyz_2)"
+    geometry_mesh_origin_rpy="$(arg geometry_mesh_origin_rpy_2)"
+    geometry_mesh_tcp_xyz="$(arg geometry_mesh_tcp_xyz_2)"
+    geometry_mesh_tcp_rpy="$(arg geometry_mesh_tcp_rpy_2)"
+    gripper_version="$(arg gripper_version_2)"
+      load_gazebo_plugin="true"
+      gazebo_self_collide="$(arg gazebo_self_collide)"/>
+
+  <xacro:if value="$(arg add_gripper_2)">
+    <!-- Fortress uses this deterministic joint only after the pickup script
+         has confirmed the gripper is closed around the workpiece. -->
+    <gazebo>
+      <plugin filename="libignition-gazebo-detachable-joint-system.so"
+              name="ignition::gazebo::systems::DetachableJoint">
+        <!-- Gazebo merges the fixed gripper joint into R_link6. -->
+        <parent_link>R_link6</parent_link>
+        <child_model>hollow_cylinder_workpiece</child_model>
+        <child_link>body</child_link>
+        <detach_topic>/R_hollow_cylinder/detach</detach_topic>
+        <attach_topic>/R_hollow_cylinder/attach</attach_topic>
+        <output_topic>/R_hollow_cylinder/state</output_topic>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+
+  <xacro:if value="$(arg add_fixed_camera)">
+    <material name="camera_stand_dark">
+      <color rgba="0.12 0.16 0.18 1.0"/>
+    </material>
+    <material name="camera_stand_bracket">
+      <color rgba="0.35 0.38 0.40 1.0"/>
+    </material>
+
+    <link name="camera_stand_base_link">
+      <visual name="camera_stand_base_visual">
+        <geometry><box size="0.20 0.14 0.03"/></geometry>
+        <material name="camera_stand_dark"/>
+      </visual>
+      <collision name="camera_stand_base_collision">
+        <geometry><box size="0.20 0.14 0.03"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="2.0"/>
+        <inertia ixx="0.00362" ixy="0" ixz="0" iyy="0.00682" iyz="0" izz="0.00833"/>
+      </inertial>
+    </link>
+    <joint name="camera_stand_base_joint" type="fixed">
+      <parent link="world"/>
+      <child link="camera_stand_base_link"/>
+      <origin xyz="$(arg fixed_camera_xyz)" rpy="0 0 0"/>
+    </joint>
+
+    <link name="camera_stand_post_link">
+      <visual name="camera_stand_post_visual">
+        <geometry><box size="0.05 0.05 0.47"/></geometry>
+        <material name="camera_stand_dark"/>
+      </visual>
+      <collision name="camera_stand_post_collision">
+        <geometry><box size="0.05 0.05 0.58"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="0.8"/>
+        <inertia ixx="0.02346" ixy="0" ixz="0" iyy="0.02346" iyz="0" izz="0.00033"/>
+      </inertial>
+    </link>
+    <joint name="camera_stand_post_joint" type="fixed">
+      <parent link="camera_stand_base_link"/>
+      <child link="camera_stand_post_link"/>
+      <origin xyz="0 0 0.25" rpy="0 0 0"/>
+    </joint>
+
+    <link name="camera_mount_link">
+      <visual name="camera_mount_visual">
+        <geometry><box size="0.16 0.06 0.04"/></geometry>
+        <material name="camera_stand_bracket"/>
+      </visual>
+      <collision name="camera_mount_collision">
+        <geometry><box size="0.16 0.06 0.04"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="0.25"/>
+        <inertia ixx="0.00033" ixy="0" ixz="0" iyy="0.00057" iyz="0" izz="0.00057"/>
+      </inertial>
+    </link>
+    <joint name="camera_mount_joint" type="fixed">
+      <parent link="camera_stand_post_link"/>
+      <child link="camera_mount_link"/>
+      <origin xyz="0 0 0.235" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:sensor_d435i parent="camera_mount_link" name="camera" use_nominal_extrinsics="true">
+      <origin xyz="0 0 0" rpy="$(arg fixed_camera_rpy)"/>
+    </xacro:sensor_d435i>
+
+    <!-- Both Ignition and Gazebo Sim use the world-level Sensors system. -->
+    <xacro:if value="${fixed_camera_ros2_control_plugin == 'ign_ros2_control/IgnitionSystem' or fixed_camera_ros2_control_plugin == 'gz_ros2_control/GazeboSimSystem'}">
+      <xacro:fixed_camera_sim_sensors/>
+    </xacro:if>
+  </xacro:if>
+
+</robot>

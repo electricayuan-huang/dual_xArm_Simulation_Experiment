@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="pick_platform">
+    <static>true</static>
+    <link name="platform_top">
+      <collision name="col">
+        <geometry><box><size>0.30 0.25 0.02</size></box></geometry>
+      </collision>
+      <visual name="vis">
+        <geometry><box><size>0.30 0.25 0.02</size></box></geometry>
+        <material><ambient>0.6 0.5 0.3 1</ambient><diffuse>0.6 0.5 0.3 1</diffuse></material>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="charuco_calibration_board">
+    <static>true</static>
+    <link name="board_link">
+      <collision name="board_collision">
+        <geometry><box><size>0.30 0.012 0.30</size></box></geometry>
+      </collision>
+      <visual name="board_visual">
+        <geometry><box><size>0.30 0.012 0.30</size></box></geometry>
+        <material>
+          <ambient>0.92 0.92 0.92 1</ambient>
+          <diffuse>0.92 0.92 0.92 1</diffuse>
+        </material>
+      </visual>
+      <visual name="charuco_visual">
+        <pose>0 -0.0065 0 1.5707963 0 0</pose>
+        <geometry><plane><normal>0 0 1</normal><size>0.30 0.30</size></plane></geometry>
+        <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <pbr>
+            <metal>
+              <albedo_map>model://charuco_calibration_board/materials/textures/charuco_5x5.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="workpiece_pedestal">
+    <static>true</static>
+    <link name="body">
+      <collision name="collision">
+        <geometry><box><size>0.14 0.14 0.10</size></box></geometry>
+         <surface><friction><ode><mu>1.0</mu><mu2>1.0</mu2><slip1>0.0</slip1><slip2>0.0</slip2></ode></friction></surface>
+      </collision>
+      <visual name="visual">
+        <geometry><box><size>0.14 0.14 0.10</size></box></geometry>
+        <material>
+          <ambient>0.18 0.20 0.22 1</ambient>
+          <diffuse>0.28 0.30 0.33 1</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
